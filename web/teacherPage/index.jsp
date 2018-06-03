@@ -60,7 +60,7 @@
             success:function (data) {
                 var courseId = data["cid"];
                 strHtml += "<tr><td>"+index+"</td>";
-                strHtml += "<td><a href='predictionList.jsp?cid="+courseId+"'>"+courseId+"</a></td>";
+                strHtml += "<td><a href='courseList.jsp?cid="+courseId+"'>"+courseId+"</a></td>";
                 strHtml += "<td>"+data["all"]+ "</td>";
                 strHtml += "<td>"+data["certified"]+ "</td>";
                 index++;

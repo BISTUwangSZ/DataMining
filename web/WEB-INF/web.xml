@@ -30,4 +30,13 @@
         <url-pattern>/cList.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>getStudentList</servlet-name>
+        <servlet-class>Servlet.GetStudentList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getStudentList</servlet-name>
+        <url-pattern>/sList.do</url-pattern>
+    </servlet-mapping>
+
 </web-app>

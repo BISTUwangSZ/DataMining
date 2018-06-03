@@ -297,48 +297,48 @@ public class Teacher {
      * @param cid 课程Id
      * @return 学生信息
      */
-    public JSONObject getStudentList(String cid, int pageNo, int pageSize) {
-        JSONObject students = new JSONObject();
-        String sql = "SELECT uid, location, learner_level,age, gender, grade, start_time, last_time, nevents, ndays, nplay_videos, nchapters, " +
-                "nforum_posts, certified FROM " + tableNames.originDataTableName + " WHERE cid ='" + cid + "' limit ?,?";
-        String newCid = cid.replace("/", "-");
-        try {
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, (pageNo - 1) * pageSize);//距离这一页的第一行数据，其前面有多少行数据
-            pst.setInt(2, pageSize);//每页有多少行
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                ArrayList<String> dataItem = new ArrayList<>();
-                dataItem.add(rs.getString(2));
-                dataItem.add(rs.getString(3));
-                dataItem.add(rs.getString(4));
-                dataItem.add(rs.getString(5));
-                dataItem.add(rs.getString(6));
-                dataItem.add(rs.getString(7));
-                dataItem.add(rs.getString(8));
-                dataItem.add(rs.getString(9));
-                dataItem.add(rs.getString(10));
-                dataItem.add(rs.getString(11));
-                dataItem.add(rs.getString(12));
-                dataItem.add(rs.getString(13));
-                dataItem.add(rs.getString(14));
-                students.put(rs.getString(1), dataItem);
-            }
-            String path = "web/json/teacher/" +newCid + "_studentList.json";
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
-            outputStream.write(students.toString().getBytes());
-            outputStream.flush();
-            outputStream.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return students;
-    }
+//    public JSONObject getStudentList(String cid, int pageNo, int pageSize) {
+//        JSONObject students = new JSONObject();
+//        String sql = "SELECT uid, location, learner_level,age, gender, grade, start_time, last_time, nevents, ndays, nplay_videos, nchapters, " +
+//                "nforum_posts, certified FROM " + tableNames.originDataTableName + " WHERE cid ='" + cid + "' limit ?,?";
+//        String newCid = cid.replace("/", "-");
+//        try {
+//            PreparedStatement pst = conn.prepareStatement(sql);
+//            pst.setInt(1, (pageNo - 1) * pageSize);//距离这一页的第一行数据，其前面有多少行数据
+//            pst.setInt(2, pageSize);//每页有多少行
+//            ResultSet rs = pst.executeQuery();
+//            while (rs.next()) {
+//                ArrayList<String> dataItem = new ArrayList<>();
+//                dataItem.add(rs.getString(2));
+//                dataItem.add(rs.getString(3));
+//                dataItem.add(rs.getString(4));
+//                dataItem.add(rs.getString(5));
+//                dataItem.add(rs.getString(6));
+//                dataItem.add(rs.getString(7));
+//                dataItem.add(rs.getString(8));
+//                dataItem.add(rs.getString(9));
+//                dataItem.add(rs.getString(10));
+//                dataItem.add(rs.getString(11));
+//                dataItem.add(rs.getString(12));
+//                dataItem.add(rs.getString(13));
+//                dataItem.add(rs.getString(14));
+//                students.put(rs.getString(1), dataItem);
+//            }
+//            String path = "web/json/teacher/" +newCid + "_studentList.json";
+//            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
+//            outputStream.write(students.toString().getBytes());
+//            outputStream.flush();
+//            outputStream.close();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return students;
+//    }
 
     //页面4
     public void importPredictionData(String path, String cid) {
