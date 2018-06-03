@@ -18,12 +18,9 @@ import java.util.ArrayList;
 
 
 public class GetLocationServlet extends HttpServlet {
-    private Connection conn;
     private Strings tableNames;
 
     public GetLocationServlet(){
-        DB db = new DB();
-        conn = db.initDB();
         tableNames = new Strings();
     }
 
@@ -36,6 +33,8 @@ public class GetLocationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
+        Connection conn = (Connection) session.getAttribute("conn");
+
         String sql = "SELECT location,COUNT(*) FROM " + tableNames.originDataTableName + " WHERE cid = '" + cid + "' and location != 'Unknown_Other' GROUP BY location ORDER BY count(*) DESC LIMIT 30 ";
         JSONObject json = new JSONObject();
         try {

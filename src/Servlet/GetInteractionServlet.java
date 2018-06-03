@@ -20,12 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetInteractionServlet  extends HttpServlet {
-    private Connection conn;
     private Strings tableNames;
 
     public GetInteractionServlet(){
-        DB db = new DB();
-        conn = db.initDB();
         tableNames = new Strings();
     }
 
@@ -39,6 +36,7 @@ public class GetInteractionServlet  extends HttpServlet {
         JSONObject attrs = new JSONObject();
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
+        Connection conn = (Connection) session.getAttribute("conn");
 
         String sql = "select grade,nevents,nplay_videos,nchapters,nforum_posts,uid from " + tableNames.originDataTableName +
                 " where cid ='" + cid + "' and grade != 'null'";

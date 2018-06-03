@@ -25,8 +25,7 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
     private Strings tableNames;
 
     public GetAttributeWithCertifiedServlet(){
-        DB db = new DB();
-        conn = db.initDB();
+
         tableNames = new Strings();
     }
 
@@ -41,7 +40,7 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
         String kind = req.getParameter("kind");
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
-
+        conn = (Connection) session.getAttribute("conn");
         String attribute = "select " + kind + ", count(*) from " + tableNames.classfierTableName + " where cid='" + cid + "' group by " + kind +" order by " + kind;
         String certified = "select " + kind + ", count(*) from " + tableNames.classfierTableName + " where cid = '" + cid + "' and certified = 'yes' group by " + kind +" order by " + kind;;
         Map<String,Integer> attributeJson = getNumberOfAttributes(attribute);

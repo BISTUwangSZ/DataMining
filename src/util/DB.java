@@ -18,12 +18,12 @@ public class DB {
     double min[] = {100000, 100000, 100000, 100000, 100000};
 
     public Connection initDB() {
-//        String url = "jdbc:mysql://localhost/edx?characterEncoding=utf8&useSSL=true";
-//        String user = "root";
-//        String psw = "123456";
-        String url = "jdbc:mysql://123.206.205.246:3306/student?characterEncoding=utf8";
-        String user = "liuqing";
-        String psw = "liuqing123456";
+        String url = "jdbc:mysql://localhost/edx?characterEncoding=utf8&useSSL=true";
+        String user = "root";
+        String psw = "123456";
+//        String url ="jdbc:mysql://123.206.205.246:3306/student?characterEncoding=utf8";
+//        String user = "liuqing";
+//        String psw = "liuqing123456";
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Driver loaded");
@@ -46,8 +46,8 @@ public class DB {
      */
     public void createTable(ArrayList<Data> data) {
         System.out.println("正在创建数据表……");
-        ArrayList<Data> originData = data;
-        createOriginTable(originData);
+//        ArrayList<Data> originData = data;
+//        createOriginTable(originData);
 
         ArrayList<ClassfierData> classfierData = classfyData(data);
         createClassfierTable(classfierData);
@@ -59,8 +59,8 @@ public class DB {
      * @param originData 从csv读取的数据
      */
     private void createOriginTable(ArrayList<Data> originData) {
-        String originSql = "create table if not EXISTS " + tablenames.originDataTableName + "(cid varchar(30), uid varchar(30), PRIMARY KEY (uid,cid), identify varchar(5)," +
-                " certified varchar(5), location varchar(40), learner_level varchar(30), age varchar(10)," +
+        String originSql = "create table if not EXISTS " + tablenames.originDataTableName + "(cid varchar(30), uid varchar(30), PRIMARY KEY (uid,cid), identify varchar(20)," +
+                " certified varchar(20), location varchar(40), learner_level varchar(30), age varchar(10)," +
                 "gender varchar(10), grade varchar(10), start_time VARCHAR(20), last_time varchar(20)," +
                 "nevents double, ndays double, nplay_videos double,nchapters double,nforum_posts double)";
         try {
@@ -188,11 +188,13 @@ public class DB {
                 pst.setDouble(12, cData.getNplayVideos());
                 pst.setDouble(13, cData.getNchapters());
                 pst.setDouble(14, cData.getNforumPosts());
+
                 pst.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //计算离差
         System.out.println("分类数据表数据插入完毕");
     }
 
@@ -302,7 +304,7 @@ public class DB {
      *
      * @param data 从csv文件读出的数据
      */
-    public void createPredictionTable(ArrayList<Data> data) {
+    public void createPredictionTable(ArrayList<Data> data, int kind) {
         ArrayList<ClassfierData> cData;
         String predictionSql = "create table if not EXISTS " + tablenames.predictionTableName + "(cid varchar(30), uid varchar(30), PRIMARY KEY (uid,cid), " +
                 "identify varchar(20), certified varchar(5), location varchar(40), learner_level varchar(30), age varchar(10),gender varchar(10)," +
@@ -314,7 +316,7 @@ public class DB {
             //将原始数据转化为分类数据
             cData = classfyData(data);
             //插入数据
-            insertPredictionData(cData);
+            insertPredictionData(cData, kind);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -326,7 +328,7 @@ public class DB {
      *
      * @param cData 分类使用的数据
      */
-    private void insertPredictionData(ArrayList<ClassfierData> cData) {
+    private void insertPredictionData(ArrayList<ClassfierData> cData, int kind) {
         System.out.println("正在插入预测数据");
         String sql = "INSERT INTO " + tablenames.predictionTableName + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -341,11 +343,21 @@ public class DB {
                 pst.setString(7, dataItem.getAge());
                 pst.setString(8, dataItem.getGender());
                 pst.setString(9, dataItem.getGrade());
-                pst.setDouble(10, dataItem.getNevents());
-                pst.setDouble(11, dataItem.getNdays());
-                pst.setDouble(12, dataItem.getNplayVideos());
-                pst.setDouble(13, dataItem.getNchapters());
-                pst.setDouble(14, dataItem.getNforumPosts());
+                switch (kind) {
+                    case 0:
+                        pst.setDouble(10, dataItem.getNevents());
+                        pst.setDouble(11, dataItem.getNdays());
+                        pst.setDouble(12, dataItem.getNplayVideos());
+                        pst.setDouble(13, dataItem.getNchapters());
+                        pst.setDouble(14, dataItem.getNforumPosts());
+                        break;
+                    case 1:
+                        pst.setDouble(10, dataItem.getAvgNevents());
+                        pst.setDouble(11, dataItem.getAvgNdays());
+                        pst.setDouble(12, dataItem.getAvgNplayVideo());
+                        pst.setDouble(13, dataItem.getAvgNchapters());
+                        pst.setDouble(14, dataItem.getAvgNforumPosts());
+                }
                 pst.executeUpdate();
             }
         } catch (SQLException e) {

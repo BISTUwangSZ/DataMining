@@ -19,12 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetStudentList extends HttpServlet {
-    private Connection conn;
     private Strings tableNames;
 
     public GetStudentList(){
-        DB db = new DB();
-        conn = db.initDB();
         tableNames = new Strings();
     }
 
@@ -41,6 +38,8 @@ public class GetStudentList extends HttpServlet {
 
         HttpSession session = req.getSession();
         session.setAttribute("cid",cid);
+        Connection conn = (Connection) session.getAttribute("conn");
+
         int pageNo = Integer.parseInt(page);
 
         JSONObject students = new JSONObject();

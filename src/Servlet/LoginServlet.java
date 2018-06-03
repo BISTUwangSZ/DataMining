@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet implements Servlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        session.setAttribute("conn",conn);
         response.setContentType("text/html");
         String result = "";
         // 获取用户名

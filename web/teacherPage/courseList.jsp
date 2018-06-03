@@ -15,7 +15,7 @@
 </script>
 <html>
 <head>
-    <title>选课学生列表</title>
+    <title>课程列表</title>
     <!-- 引入各种CSS样式表 -->
     <script src="/js/echarts.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>

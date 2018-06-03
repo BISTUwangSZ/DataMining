@@ -6,6 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+        String cid1 = request.getParameter("cid");
+    System.out.println("dk"+cid1);
+%>
+<script type="text/javascript">
+    var headCid=<%=cid1%>;
+</script>
 <html>
 <head>
     <title>Title</title>
@@ -32,7 +39,7 @@
                     <i class="fa fa-list"></i> 首页</a></li>
                 <li><a id="list" href=""style="width: 100px">
                     <i class="fa fa-list"></i> 课程列表</a></li>
-                <li><a id="chart" href="courseChart.jsp" style="width: 100px">
+                <li><a id="chart" style="width: 100px" href="courseChart.jsp?cid="+cid>
                     <i class="fa fa-list"></i> 课程图表</a></li>
             </ul>
 

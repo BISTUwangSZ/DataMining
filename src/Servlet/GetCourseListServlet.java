@@ -18,12 +18,12 @@ import java.util.ArrayList;
 
 
 public class GetCourseListServlet extends HttpServlet{
-    private Connection conn;
+//    private Connection conn;
     private Strings tableNames;
 
     public GetCourseListServlet(){
-        DB db = new DB();
-        conn = db.initDB();
+//        DB db = new DB();
+//        conn = db.initDB();
         tableNames = new Strings();
     }
 
@@ -37,6 +37,7 @@ public class GetCourseListServlet extends HttpServlet{
         resp.setContentType("text/html; charset=utf-8");
         HttpSession session = req.getSession();
         String tid = session.getAttribute("tid").toString();
+        Connection conn = (Connection) session.getAttribute("conn");
         JSONObject courseList = new JSONObject();
         //创建视图
         String sql = "select cid c,count(*)," +

@@ -21,12 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetGradeServlet extends HttpServlet {
-    private Connection conn;
     private Strings tableNames;
 
     public GetGradeServlet(){
-        DB db = new DB();
-        conn = db.initDB();
         tableNames = new Strings();
     }
 
@@ -41,6 +38,7 @@ public class GetGradeServlet extends HttpServlet {
         JSONObject json = new JSONObject();
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
+        Connection conn = (Connection) session.getAttribute("conn");
 
         String sql = "select grade,count(*) from " + tableNames.originDataTableName + " where cid = '" + cid
                 +"'and grade != 'null' group by grade";
