@@ -67,6 +67,9 @@ public class LoginServlet extends HttpServlet implements Servlet {
                 if (rs.getInt("role") == 2) {
                     session.setAttribute("tid",sUserName);
                     response.sendRedirect("/teacherPage/index.jsp");
+                }else if (rs.getInt("role") == 1) {
+                    session.setAttribute("uid",sUserName);
+                    response.sendRedirect("/studentPage/index.jsp");
                 }
             }
         } catch (SQLException e) {

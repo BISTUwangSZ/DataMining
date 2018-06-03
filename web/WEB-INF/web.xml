@@ -75,4 +75,13 @@
         <url-pattern>/interaction.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>stuGetCourseList</servlet-name>
+        <servlet-class>Servlet.StuGetCourseList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>stuGetCourseList</servlet-name>
+        <url-pattern>/stuCList.do</url-pattern>
+    </servlet-mapping>
+
 </web-app>

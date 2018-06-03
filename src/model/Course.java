@@ -6,6 +6,7 @@ package model;
 
 public class Course {
 
+    private String cid;
     private String identify;
     private String grade;
     private String startTime;
@@ -15,6 +16,14 @@ public class Course {
     private double nplayVideos;
     private double nchapters;
     private double nforumPosts;
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
 
     public String getIdentify() {
         return identify;

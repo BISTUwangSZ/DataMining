@@ -46,8 +46,8 @@ public class DB {
      */
     public void createTable(ArrayList<Data> data) {
         System.out.println("正在创建数据表……");
-//        ArrayList<Data> originData = data;
-//        createOriginTable(originData);
+        ArrayList<Data> originData = data;
+        createOriginTable(originData);
 
         ArrayList<ClassfierData> classfierData = classfyData(data);
         createClassfierTable(classfierData);
