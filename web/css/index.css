@@ -1,0 +1,46 @@
+/*导航栏背景*/
+
+header .navbar-default {
+    background: url(../img/bg.jpg) repeat-x;
+}
+
+
+/*头部字体颜色*/
+
+.navbar-default .navbar-brand {
+    color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #fff;
+}
+
+
+/*内容区域*/
+
+.wrap {
+    height: 490px;
+}
+
+.left {
+    width: 20%;
+    height: 490px;
+    float: left;
+    margin-right: 10px;
+    background: #f8f8f8;
+}
+
+.right {
+    width: 79%;
+    height: 100px;
+    height: 490px;
+    float: left;
+    background: #f8f8f8;
+}
+
+
+/*去除圆角*/
+
+.nav-pills > li > a {
+    border-radius: 0;
+}
