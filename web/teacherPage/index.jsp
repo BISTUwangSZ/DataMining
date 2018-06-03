@@ -54,19 +54,16 @@
         $.ajax({
             type:"post",
             async:false,
-            url:"../json/teacher/jiaoshi_courseList.json",
+            url:"../cList.do",
             data:{},
             dataType:"json",
-            success:function (result) {
-                $.each(result,function (cid,dataItem) {
-                    strHtml += "<tr><td>"+index+"</td>";
-                    // strHtml += "<td><a href='courseInfo.jsp?cid="+cid+"'>"+cid+"</a></td>";
-                    strHtml += "<td><a href='predictionList.jsp?cid="+cid+"'>"+cid+"</a></td>";
-
-                    strHtml += "<td>"+dataItem[0]+ "</td>";
-                    strHtml += "<td>"+dataItem[1]+"</td></tr>";
-                    index++;
-                });
+            success:function (data) {
+                var courseId = data["cid"];
+                strHtml += "<tr><td>"+index+"</td>";
+                strHtml += "<td><a href='predictionList.jsp?cid="+courseId+"'>"+courseId+"</a></td>";
+                strHtml += "<td>"+data["all"]+ "</td>";
+                strHtml += "<td>"+data["certified"]+ "</td>";
+                index++;
                 $jsontip.html(strHtml);
             },
             error: function (errorMsg) {

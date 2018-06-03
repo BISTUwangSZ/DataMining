@@ -20,4 +20,14 @@
         <servlet-name>login</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getCourseList</servlet-name>
+        <servlet-class>Servlet.GetCourseListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getCourseList</servlet-name>
+        <url-pattern>/cList.do</url-pattern>
+    </servlet-mapping>
+
 </web-app>
