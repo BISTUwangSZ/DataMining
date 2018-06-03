@@ -6,13 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="head.jsp"></jsp:include>
+<jsp:include page="chartHead.jsp"></jsp:include>
 <%
     String cid = request.getParameter("cid");
 %>
 <script>
     var cid='<%=cid%>';
-    console.info(cid);
 </script>
 <html>
 <head>
@@ -22,10 +21,15 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
+
+
 <div class="myRight" style="float: left; width: 900px">
-    <small>选课学生列表</small>
     <!-- 载入左侧菜单指向的jsp（或html等）页面内容 -->
     <div id="studentList"></div>
 </div>
@@ -50,7 +54,6 @@
 <!--教师上传课程列表-->
 <script type="text/javascript">
     window.studentList="";
-
     $(function () {
         var index=1;
         var strHtml = "";//存储数据的变量

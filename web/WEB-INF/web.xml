@@ -39,4 +39,40 @@
         <url-pattern>/sList.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>getLocation</servlet-name>
+        <servlet-class>Servlet.GetLocationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getLocation</servlet-name>
+        <url-pattern>/location.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getAttributeWithCertified</servlet-name>
+        <servlet-class>Servlet.GetAttributeWithCertifiedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getAttributeWithCertified</servlet-name>
+        <url-pattern>/awc.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getGrade</servlet-name>
+        <servlet-class>Servlet.GetGradeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getGrade</servlet-name>
+        <url-pattern>/grade.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getInteraction</servlet-name>
+        <servlet-class>Servlet.GetInteractionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getInteraction</servlet-name>
+        <url-pattern>/interaction.do</url-pattern>
+    </servlet-mapping>
+
 </web-app>

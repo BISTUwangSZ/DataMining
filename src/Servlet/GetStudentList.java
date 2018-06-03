@@ -38,6 +38,9 @@ public class GetStudentList extends HttpServlet {
         resp.setContentType("text/html; charset=utf-8");
         String cid = req.getParameter("cid");
         String page = req.getParameter("pageNo");
+
+        HttpSession session = req.getSession();
+        session.setAttribute("cid",cid);
         int pageNo = Integer.parseInt(page);
 
         JSONObject students = new JSONObject();
