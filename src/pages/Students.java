@@ -86,7 +86,7 @@ public class Students {
 //        Prediction p = new Prediction(conn);
 //        p.C45Tree();
         Kfolder kfolder = new Kfolder();
-        kfolder.C45Tree();
+        kfolder.C45Tree("");
         String path1 = "";
 //        kfolder.prediction(path1);
 
@@ -108,7 +108,6 @@ public class Students {
                 list.add(rs.getString(1));
                 list.add(rs.getString(2));
                 list.add(rs.getString(3));
-                list.add("这回替换成一句话");
                 json.put(index,list);
                 index++;
             }
@@ -120,7 +119,6 @@ public class Students {
 
     public static void main(String args[]){
         Students s = new Students("MHxPC130024894");
-        s.importPredictionData("C:\\Users\\Cathleen\\Desktop\\Kfolder.csv");
-//        System.out.println(s.getAllCourseInfo(1,10));
+        s.importPredictionData("C:\\Users\\Cathleen\\Desktop\\test.csv");
     }
 }

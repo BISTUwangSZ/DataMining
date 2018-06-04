@@ -12,7 +12,8 @@ public class MyFile {
     private String path;
     ;
     public MyFile() {
-        this.path="src/dataset/Kfolder.csv";
+//        this.path="src/dataset/Kfolder.csv";
+        this.path="C:\\Users\\Cathleen\\Desktop\\Kfolder.csv";
     }
 
     public MyFile(String path) {

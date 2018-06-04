@@ -61,7 +61,6 @@ public class GetCourseListServlet extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //返回给前段页面
         PrintWriter out = resp.getWriter();
         out.println(courseList);
         out.flush();

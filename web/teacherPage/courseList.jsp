@@ -12,9 +12,25 @@
     session1.setAttribute("cid",cid);
 %>
 <script>
-    var cid='<%=cid%>';
-    console.info(cid);
+    function showResult() {
+    var path = prompt("请输入文件地址","");
+    console.info(path);
+        $.ajax({
+            type: "post",
+            async: false,
+            url: "../p.do",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+
+            },
+            error: function (errorMsg) {
+                alert("加载失败");
+            }
+        })
+}
 </script>
+
 <html>
 <head>
     <title>课程列表</title>
@@ -56,7 +72,7 @@
         </div>
     </div>
 </div>
-
+<input type="button" class="btn btn-primary dropdown-toggle" onclick="showResult()" value="预测" style="float:right; margin-right: 30px">
 <div class="myRight" style="float: left; width: 900px">
     <!-- 载入左侧菜单指向的jsp（或html等）页面内容 -->
     <div id="studentList"></div>
@@ -169,6 +185,8 @@
         $json.html(strHtml);
     }
 </script>
+
+
 
 </body>
 </html>

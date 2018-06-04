@@ -25,7 +25,6 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
     private Strings tableNames;
 
     public GetAttributeWithCertifiedServlet(){
-
         tableNames = new Strings();
     }
 
@@ -95,7 +94,6 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
         return map;
     }

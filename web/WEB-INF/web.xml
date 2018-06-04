@@ -84,4 +84,13 @@
         <url-pattern>/stuCList.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>prediction</servlet-name>
+        <servlet-class>Servlet.getResult</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>prediction</servlet-name>
+        <url-pattern>/p.do</url-pattern>
+    </servlet-mapping>
+
 </web-app>
