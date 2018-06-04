@@ -43,8 +43,6 @@
             <ul class="nav nav-sidebar">
                 <li><a id="index" href="index.jsp" style="width: 100px">
                     <i class="fa fa-list"></i> 首页</a></li>
-                <li><a id="list" href="courseList.jsp?cid=<%=cid%>"style="width: 100px">
-                    <i class="fa fa-list"></i> 课程列表</a></li>
                 <li><a id="chart" style="width: 100px" href="courseChart.jsp?cid=<%=cid%>">
                     <i class="fa fa-list"></i> 课程图表</a></li>
             </ul>

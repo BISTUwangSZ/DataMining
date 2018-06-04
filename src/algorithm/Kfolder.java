@@ -12,7 +12,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Kfolder {
-    ArrayList<Data> data;
+    String predictionPath = "src/dataset/prediction.csv";
+    final ArrayList<Data> data;
+    double [] maxArr = new double[5];
+    double [] minArr = new double[5];
+
+
     //测试集
     ArrayList<Data> test = new ArrayList<>();
     //训练集
@@ -24,15 +29,19 @@ public class Kfolder {
     private String decisionName = "certified";                      //决策属性
     private BufferedOutputStream outputStream;
     private Node node;
-    private String cid;                                              //课程号
 
 
-    public Kfolder(String path, String cid) {
-        this.cid = cid;
-        MyFile myFile = new MyFile(path);
+    public Kfolder() {
+        MyFile myFile = new MyFile();
         data = myFile.myFileReader();
+        //处理时间跨度
+        dealTimeSpan();
+
+
+        //生成随机数据
         Map<Integer, List<Data>> allData = randomData();
         int flag = 0;
+        //1份作为测试集，9份作为训练集
         for (int i = 0; i < allData.size(); i++) {
             if (i == flag) {
                 test.addAll(allData.get(i));
@@ -40,33 +49,32 @@ public class Kfolder {
                 train.addAll(allData.get(i));
             }
         }
-        //处理时间跨度
-        dealTimeSpan();
         attrNames = getAttrNames();
         attrValues = getAttrValues();
-
+        getData(train);
     }
 
-    public Kfolder(String path) {
-        MyFile myFile = new MyFile(path);
-        data = myFile.myFileReader();
-
-        //处理时间跨度
-        dealTimeSpan();
-        attrNames = getAttrNames();
-        attrValues = getAttrValues();
-
-        Map<Integer, List<Data>> allData = randomData();
-        int flag = 0;
-        for (int i = 0; i < allData.size(); i++) {
-            if (i == flag) {
-                test.addAll(allData.get(i));
+    private void getData(ArrayList<Data> data) {
+        for (Data dataItem : data){
+            double nevents = (dataItem.getNevents()-minArr[0])/(maxArr[0]-minArr[0]);
+            dataItem.setNevents(smooth(nevents));
+            double ndays = (dataItem.getNdays()-minArr[1])/(maxArr[1]-minArr[1]);
+            dataItem.setNdays(smooth(ndays));
+            double nplayVideos = (dataItem.getNplayVideos()-minArr[2])/(maxArr[2]-minArr[2]);
+            dataItem.setNplayVideos(smooth(nplayVideos));
+            double nchapters = (dataItem.getNchapters()-minArr[3])/(maxArr[3]-minArr[3]);
+            dataItem.setNchapters(smooth(nchapters));
+            double nforumPosts = (dataItem.getNforumPosts()-minArr[4])/(maxArr[4]-minArr[4]);
+            dataItem.setNforumPosts(smooth(nforumPosts));
+            if (dataItem.getGrade().equals("null")){
+                dataItem.setGrade("-1");
             } else {
-                train.addAll(allData.get(i));
+                dataItem.setGrade(smooth(Double.parseDouble(dataItem.getGrade())));
             }
         }
     }
 
+    //处理时间跨度
     private void dealTimeSpan() {
 
         for (int i = 0; i < train.size(); i++) {
@@ -168,19 +176,19 @@ public class Kfolder {
         Set<Double> nchaptersSet = new TreeSet<>();
         Set<Double> nforumPosts = new TreeSet<>();
 
-        for (int i = 0; i < data.size(); i++) {
-            identifySet.add(data.get(i).getIdentify());
-            certfiedSet.add(data.get(i).getCertified());
-            locationSet.add(data.get(i).getLocation());
-            levelSet.add(data.get(i).getLevel());
-            ageSet.add(data.get(i).getAge());
-            genderSet.add(data.get(i).getGender());
-            gradeSet.add(data.get(i).getGrade());
-            neventsSet.add(data.get(i).getNevents());
-            nDaysFrequencySet.add(data.get(i).getNdays());
-            nPlayVideosSet.add(data.get(i).getNplayVideos());
-            nchaptersSet.add(data.get(i).getNchapters());
-            nforumPosts.add(data.get(i).getNforumPosts());
+        for (int i = 0; i < train.size(); i++) {
+            identifySet.add(train.get(i).getIdentify());
+            certfiedSet.add(train.get(i).getCertified());
+            locationSet.add(train.get(i).getLocation());
+            levelSet.add(train.get(i).getLevel());
+            ageSet.add(train.get(i).getAge());
+            genderSet.add(train.get(i).getGender());
+            gradeSet.add(train.get(i).getGrade());
+            neventsSet.add(train.get(i).getNevents());
+            nDaysFrequencySet.add(train.get(i).getNdays());
+            nPlayVideosSet.add(train.get(i).getNplayVideos());
+            nchaptersSet.add(train.get(i).getNchapters());
+            nforumPosts.add(train.get(i).getNforumPosts());
         }
 
         attrValues.add(toArrayList(identifySet));
@@ -191,11 +199,11 @@ public class Kfolder {
         attrValues.add(toArrayList(genderSet));
         attrValues.add(toArrayList(smooth(gradeSet)));
         //离散化
-        attrValues.add(lisanhua(neventsSet));
-        attrValues.add(lisanhua(nDaysFrequencySet));
-        attrValues.add(lisanhua(nPlayVideosSet));
-        attrValues.add(lisanhua(nchaptersSet));
-        attrValues.add(lisanhua(nforumPosts));
+        attrValues.add(lisanhua(neventsSet,0));
+        attrValues.add(lisanhua(nDaysFrequencySet,1));
+        attrValues.add(lisanhua(nPlayVideosSet,2));
+        attrValues.add(lisanhua(nchaptersSet,3));
+        attrValues.add(lisanhua(nforumPosts,4));
         return attrValues;
     }
 
@@ -207,12 +215,15 @@ public class Kfolder {
         return list;
     }
 
-    private ArrayList<String> lisanhua(Set set) {
+    //离差标准化
+    private ArrayList<String> lisanhua(Set set,int index) {
         ArrayList<Double> temp = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
         temp.addAll(set);
         double min = temp.get(0);
         double max = temp.get(temp.size() - 1);
+        maxArr[index]=max;
+        minArr[index]=min;
         Set tempSet = new TreeSet();
         for (int i = 0; i < temp.size(); i++) {
             double res = 0;
@@ -226,6 +237,7 @@ public class Kfolder {
 
     }
 
+    //分享光滑--成绩
     private Set smooth(Set<String> gradeSet) {
         Set set = new TreeSet();
         Iterator iterator = gradeSet.iterator();
@@ -271,10 +283,19 @@ public class Kfolder {
         return String.valueOf(result);
     }
 
-    private ArrayList<ArrayList<String>> transfer(ArrayList<Data> temp) {
+
+
+    //数据类型转换
+    //0:含cid,uid
+    //1：不含cid,uid
+    private ArrayList<ArrayList<String>> transfer(ArrayList<Data> temp, int flag) {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         for (int i = 0; i < temp.size(); i++) {
             ArrayList<String> itemList = new ArrayList<>();
+            if (flag==0){
+                itemList.add(temp.get(i).getCid());
+                itemList.add(temp.get(i).getUid());
+            }
             itemList.add(temp.get(i).getIdentify());
             itemList.add(temp.get(i).getCertified());
             itemList.add(temp.get(i).getLocation());
@@ -296,36 +317,32 @@ public class Kfolder {
         return list;
     }
 
-    //将决策树的内容写进文件
-    public void C45Tree() {
+    //构建决策树入口
+    public Map<String,ArrayList<String>> C45Tree() {
         node = new Node();
         node.setValue("root");
         try {
             outputStream = new BufferedOutputStream(new FileOutputStream("out.txt"));
             //构建决策树
-            buildTree(transfer(train), attrNames, attrValues, node);
+            buildTree(transfer(train,1), attrNames, attrValues, node);
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assess(attrNames, transfer(test));
+        assess(attrNames, transfer(test,1));
+        Map<String,ArrayList<String>> map = prediction(predictionPath);
+        return map;
     }
 
-//    public Map<String,ArrayList<String>> prediction(String path) {
-//
-//    }
-
-
-    //构建决策树
+    //构建决策树（迭代）
     private void buildTree(List<ArrayList<String>> datalist, List<String> attrNames, List<ArrayList<String>> attrValues, Node fatherRoot) {
         //获取最大信息增益
         String attr = getMaxGainRatioAttr(datalist, attrNames, attrValues);
-        //
+        //获得attr属性的分枝及每个分枝的数据
         Map<String, List<ArrayList<String>>> cutData = getCutData(attr, datalist, attrNames, attrValues);
         //遍历cutData的每一个值
         for (Map.Entry<String, List<ArrayList<String>>> entry : cutData.entrySet()) {
-
             String space = "";
             Node childNode = new Node();
             fatherRoot.addChildNode(childNode);
@@ -579,11 +596,64 @@ public class Kfolder {
         System.out.println("TN"+TN);
         System.out.println("FN" +FN);
         System.out.printf("准确率accuracy：%.2f", accuracy * 100);
-//        System.out.printf("\n分类错误率：%.2f", errorRate * 100);
         System.out.printf("\n精度precision：%.2f", precision * 100);
         System.out.printf("\n召回率recall：%.2f", recall * 100);
 
     }
 
+
+    public Map<String,ArrayList<String>> prediction(String predictionPath) {
+        Map<String,ArrayList<String>> map = new HashMap<>();
+        MyFile file = new MyFile(predictionPath);
+        ArrayList<Data> predictionData = file.myFileReader();
+        getData(predictionData);
+        prediction(transfer(predictionData,0),map);
+        return map;
+    }
+
+    private void prediction(ArrayList<ArrayList<String>> predictionData,Map<String,ArrayList<String>> map) {
+        ArrayList<String> cidList = new ArrayList<>();
+        ArrayList<String> uidList = new ArrayList<>();
+        ArrayList<String> certifiedList = new ArrayList<>();
+        for (ArrayList<String> dataItem : predictionData) {
+            Node searchNode = node;
+            boolean lag = true;
+
+            while (searchNode.children.size() != 0) {
+                boolean flag = false;
+                for (int i = 0; i < searchNode.children.size(); i++) {
+                    Node temp = searchNode.children.get(i);
+                    int index = attrNames.indexOf(temp.value);
+                    if (dataItem.get(index+2).toString().equals(temp.disvisionValue)) {
+                        searchNode = temp;
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    lag = flag;
+                    break;
+                }
+            }
+            String result;
+            if (!lag) {
+                result = "no";
+            } else {
+                result = searchNode.decision;
+            }
+
+            cidList.add(dataItem.get(0));
+            uidList.add(dataItem.get(1));
+            certifiedList.add(result);
+        }
+        map.put("cid",cidList);
+        map.put("uid",uidList);
+        map.put("result",certifiedList);
+    }
+
+    public static void main(String [] args){
+        Kfolder kfolder = new Kfolder();
+        kfolder.C45Tree();;
+    }
 
 }

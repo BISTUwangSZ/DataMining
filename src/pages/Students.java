@@ -85,7 +85,7 @@ public class Students {
 //        db.createPredictionTable(data,0);
 //        Prediction p = new Prediction(conn);
 //        p.C45Tree();
-        Kfolder kfolder = new Kfolder(path);
+        Kfolder kfolder = new Kfolder();
         kfolder.C45Tree();
         String path1 = "";
 //        kfolder.prediction(path1);

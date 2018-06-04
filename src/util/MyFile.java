@@ -10,9 +10,13 @@ import java.util.ArrayList;
 
 public class MyFile {
     private String path;
+    ;
+    public MyFile() {
+        this.path="src/dataset/Kfolder.csv";
+    }
 
-    public MyFile(String filePath) {
-        path = filePath;
+    public MyFile(String path) {
+        this.path = path;
     }
 
     /**

@@ -1,5 +1,6 @@
 package pages;
 
+import algorithm.Kfolder;
 import algorithm.Prediction;
 import model.Data;
 import model.Strings;
@@ -14,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Teacher {
     private String tid;
@@ -341,12 +343,10 @@ public class Teacher {
 //    }
 
     //页面4
-    public void importPredictionData(String path, String cid) {
-        MyFile file = new MyFile(path);
-        ArrayList<Data> data = file.myFileReader();
-//        db.createPredictionTable(data,0);
-        Prediction p = new Prediction(conn, cid);
-        p.C45Tree();
+    public  Map<String,ArrayList<String>> importPredictionData(String cid) {
+        Kfolder kfolder = new Kfolder();
+        Map<String,ArrayList<String>> map =  kfolder.C45Tree();
+        return map;
     }
 
 
@@ -417,7 +417,7 @@ public class Teacher {
 
 //        System.out.println(t.getGrade(cid));
 
-        t.importPredictionData("src/dataset/test.csv",cid);
+        t.importPredictionData(cid);
     }
 
 }

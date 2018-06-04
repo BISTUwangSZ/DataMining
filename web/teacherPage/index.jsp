@@ -5,7 +5,6 @@
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
 %>
-<jsp:include page="head.jsp"></jsp:include>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
@@ -27,7 +26,29 @@
 </head>
 
 <body>
+<!-- 顶部菜单（来自bootstrap官方Demon）==================================== -->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">菜鸟教程</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="../login.jsp"><span class="glyphicon glyphicon-user"></span> 退出</a></li>
+        </ul>
+    </div>
+</nav>
 
+<!-- 左侧菜单选项========================================= -->
+<div id="leftMenu" class="container-fluid" style="float: left;">
+    <div class="row-fluie">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a id="list" href="index.jsp" style="width: 100px">
+                    <i class="fa fa-list"></i> 首页</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="myRight" style="float: left; width: 900px">
     <small>欢迎登录</small>

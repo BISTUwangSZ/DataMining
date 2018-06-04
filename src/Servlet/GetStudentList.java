@@ -33,11 +33,10 @@ public class GetStudentList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=utf-8");
-        String cid = req.getParameter("cid");
         String page = req.getParameter("pageNo");
 
         HttpSession session = req.getSession();
-        session.setAttribute("cid",cid);
+        String cid = session.getAttribute("cid").toString();
         Connection conn = (Connection) session.getAttribute("conn");
 
         int pageNo = Integer.parseInt(page);
