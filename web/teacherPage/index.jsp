@@ -4,6 +4,8 @@
     String basePath = request.getScheme() + "://"
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
+    HttpSession session1 = request.getSession();
+    String tid = session1.getAttribute("tid").toString();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,7 +24,7 @@
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <title>- 后台管理系统 -</title>
+    <title>edX数据集预测分析系统</title>
 </head>
 
 <body>
@@ -30,7 +32,7 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">菜鸟教程</a>
+            <a class="navbar-brand" href="#"><%=tid%></a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="../login.jsp"><span class="glyphicon glyphicon-user"></span> 退出</a></li>

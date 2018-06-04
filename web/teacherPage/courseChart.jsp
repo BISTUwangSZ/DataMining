@@ -3,6 +3,7 @@
     String cid = request.getParameter("cid");
     HttpSession session1 = request.getSession();
     session1.setAttribute("cid",cid);
+   String tid =  session1.getAttribute("tid").toString();
 %>
 <%--
   Created by IntelliJ IDEA.
@@ -15,7 +16,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ECharts</title>
+    <title>edX数据集预测分析系统</title>
     <!-- 引入 echarts.js -->
     <script src="/js/echarts.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -28,7 +29,7 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">菜鸟教程</a>
+            <a class="navbar-brand" href="#"><%=tid%></a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="../login.jsp"><span class="glyphicon glyphicon-user"></span> 退出</a></li>

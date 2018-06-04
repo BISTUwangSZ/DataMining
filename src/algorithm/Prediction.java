@@ -346,7 +346,7 @@ public class Prediction {
                     }
                 }
                 if (flag==false){
-//                    System.out.println("无法分类");
+                    result="no";
                     break;
                 }
             }

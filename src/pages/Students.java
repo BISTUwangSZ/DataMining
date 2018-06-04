@@ -84,8 +84,8 @@ public class Students {
      * @param path  文件路径和名称
      */
     public JSONObject importPredictionData(String path){
-        MyFile file = new MyFile(path);
-        ArrayList<Data> data = file.myFileReader();
+//        MyFile file = new MyFile(path);
+//        ArrayList<Data> data = file.myFileReader();
 //        db.createPredictionTable(data,0);
         Prediction p = new Prediction(conn);
         p.C45Tree();
