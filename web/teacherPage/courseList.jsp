@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String cid = request.getParameter("cid");
+    HttpSession session1 = request.getSession();
+    session1.setAttribute("cid",cid);
 %>
 <script>
     var cid='<%=cid%>';
