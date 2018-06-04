@@ -5,10 +5,13 @@ package pages;
  */
 
 import algorithm.Kfolder;
+import algorithm.Prediction;
 import model.Course;
+import model.Data;
 import model.Strings;
 import net.sf.json.JSONObject;
 import util.DB;
+import util.MyFile;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Students {
     private Connection conn;
@@ -27,8 +31,8 @@ public class Students {
     DB db;
 
     Students(String uid) {
-//        db = new DB();
-//        conn = db.initDB();
+        db = new DB();
+        conn = db.initDB();
         this.uid = uid;
         tableNames = new Strings();
     }
@@ -79,17 +83,19 @@ public class Students {
      * 导入待预测的数据
      * @param path  文件路径和名称
      */
-    public void importPredictionData(String path){
-//        MyFile file = new MyFile(path);
-//        ArrayList<Data> data = file.myFileReader();
+    public JSONObject importPredictionData(String path){
+        MyFile file = new MyFile(path);
+        ArrayList<Data> data = file.myFileReader();
 //        db.createPredictionTable(data,0);
-//        Prediction p = new Prediction(conn);
-//        p.C45Tree();
-        Kfolder kfolder = new Kfolder();
-        kfolder.C45Tree("");
-        String path1 = "";
-//        kfolder.prediction(path1);
-
+        Prediction p = new Prediction(conn);
+        p.C45Tree();
+        JSONObject json = showPredictionList(uid);
+//        Kfolder kfolder = new Kfolder();
+//        Map<String,ArrayList<String>> map = kfolder.C45Tree(path);
+//        JSONObject jsonObject = JSONObject.fromObject(map);
+//        System.out.println(jsonObject);
+//        return jsonObject;
+        return json;
     }
 
     /**
@@ -119,6 +125,6 @@ public class Students {
 
     public static void main(String args[]){
         Students s = new Students("MHxPC130024894");
-        s.importPredictionData("C:\\Users\\Cathleen\\Desktop\\test.csv");
+        s.importPredictionData("src/dataset/test.csv");
     }
 }
