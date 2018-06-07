@@ -346,7 +346,7 @@ public class Prediction {
                     }
                 }
                 if (flag==false){
-                    result="no";
+//                    result="no";
                     break;
                 }
             }

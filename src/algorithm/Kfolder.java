@@ -1,6 +1,7 @@
 package algorithm;
 
 import model.Data;
+import net.sf.json.JSONObject;
 import util.MyFile;
 
 import java.io.BufferedOutputStream;
@@ -587,10 +588,11 @@ public class Kfolder {
     }
 
     private void prediction(ArrayList<ArrayList<String>> predictionData, Map<String, ArrayList<String>> map) {
-        ArrayList<String> cidList = new ArrayList<>();
-        ArrayList<String> uidList = new ArrayList<>();
-        ArrayList<String> certifiedList = new ArrayList<>();
+//        ArrayList<String> cidList = new ArrayList<>();
+//        ArrayList<String> uidList = new ArrayList<>();
+//        ArrayList<String> certifiedList = new ArrayList<>();
         for (ArrayList<String> dataItem : predictionData) {
+            ArrayList<String> list = new ArrayList<>();
             Node searchNode = node;
             boolean lag = true;
             while (searchNode.children.size() != 0) {
@@ -615,13 +617,18 @@ public class Kfolder {
             } else {
                 result = searchNode.decision;
             }
-            cidList.add(dataItem.get(0));
-            uidList.add(dataItem.get(1));
-            certifiedList.add(result);
+//            cidList.add(dataItem.get(0));
+//            uidList.add(dataItem.get(1));
+//            certifiedList.add(result);
+            list.add(dataItem.get(0));
+            list.add(result);
+            map.put(dataItem.get(1),list);
         }
-        map.put("cid", cidList);
-        map.put("uid", uidList);
-        map.put("result", certifiedList);
+        JSONObject json = JSONObject.fromObject(map);
+        System.out.println(json);
+//        map.put("cid", cidList);
+//        map.put("uid", uidList);
+//        map.put("result", certifiedList);
     }
 
     public static void main(String[] args) {
