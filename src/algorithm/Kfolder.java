@@ -16,6 +16,9 @@ public class Kfolder {
     final ArrayList<Data> data;
     double[] maxArr = new double[5];
     double[] minArr = new double[5];
+    private float accuracy;
+    private float precision;
+    private float recall;
 
 
     //测试集
@@ -523,7 +526,7 @@ public class Kfolder {
                 for (int i = 0; i < searchNode.children.size(); i++) {
                     Node temp = searchNode.children.get(i);
                     int index = attrNames.indexOf(temp.value);
-                    if (dataItem.get(index).toString().equals(temp.disvisionValue)) {
+                    if (temp.disvisionValue.equals(dataItem.get(index))) {
                         searchNode = temp;
                         flag = true;
                         break;
@@ -558,13 +561,13 @@ public class Kfolder {
         //总样本数
         float total = TP + FP + TN + FN;
         //准确率（准确率）
-        float accuracy = (float) (TP + TN) / (float) (TP + TN + FP + FN);
+        accuracy = (float) (TP + TN) / (float) (TP + TN + FP + FN);
         //误分类率（错误率）
         float errorRate = (float) (FP + FN) / (float) (TP + TN + FP + FN);
         //精度
-        float precision = (float) (TP) / (float) (TP + FP);
+        precision = (float) (TP) / (float) (TP + FP);
         //召回率
-        float recall = (float) (TP) / (float) (TP + FN);
+        recall = (float) (TP) / (float) (TP + FN);
 
         System.out.println("总样本数：" + total);
         System.out.println("TP" + TP);
@@ -575,6 +578,13 @@ public class Kfolder {
         System.out.printf("\n精度precision：%.2f", precision * 100);
         System.out.printf("\n召回率recall：%.2f", recall * 100);
 
+    }
+    public JSONObject showAccurancy(){
+        JSONObject json = new JSONObject();
+        json.put("accuracy",accuracy);
+        json.put("precision",precision);
+        json.put("recall",recall);
+        return json;
     }
 
 
@@ -588,9 +598,7 @@ public class Kfolder {
     }
 
     private void prediction(ArrayList<ArrayList<String>> predictionData, Map<String, ArrayList<String>> map) {
-//        ArrayList<String> cidList = new ArrayList<>();
-//        ArrayList<String> uidList = new ArrayList<>();
-//        ArrayList<String> certifiedList = new ArrayList<>();
+
         for (ArrayList<String> dataItem : predictionData) {
             ArrayList<String> list = new ArrayList<>();
             Node searchNode = node;
@@ -617,25 +625,18 @@ public class Kfolder {
             } else {
                 result = searchNode.decision;
             }
-//            cidList.add(dataItem.get(0));
-//            uidList.add(dataItem.get(1));
-//            certifiedList.add(result);
             list.add(dataItem.get(0));
             list.add(result);
             map.put(dataItem.get(1),list);
         }
         JSONObject json = JSONObject.fromObject(map);
         System.out.println(json);
-//        map.put("cid", cidList);
-//        map.put("uid", uidList);
-//        map.put("result", certifiedList);
     }
 
     public static void main(String[] args) {
         String predictionPath = "src/dataset/prediction.csv";
         Kfolder kfolder = new Kfolder();
         kfolder.C45Tree(predictionPath);
-        ;
     }
 
 }

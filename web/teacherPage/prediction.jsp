@@ -56,6 +56,8 @@
 <div style="float: left">
     <input type="text" placeholder="请输入预测文件地址" id="path" style="margin-left: 50px">
     <input type="button" class="btn btn-primary dropdown-toggle" onclick="showResult()" value="预测" style="margin-left:50px">
+    <input type="button" class="btn btn-primary dropdown-toggle" onclick="showAccuracy()" value="显示分类器准确率" style="margin-left:50px">
+
 </div>
 
 <div class="myRight" style="float: left; width: 900px">
@@ -191,7 +193,6 @@
             "</thead>";
         var $sList = $("#predict");
         $sList.empty();//清空内容
-
         $.ajax({
             type: "post",
             async: false,
@@ -214,6 +215,10 @@
             }
         })
     }
+</script>
+
+<script type="javascript">
+
 </script>
 
 </body>
