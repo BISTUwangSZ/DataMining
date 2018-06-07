@@ -56,7 +56,11 @@
 <div style="float: left">
     <input type="text" placeholder="请输入预测文件地址" id="path" style="margin-left: 50px">
     <input type="button" class="btn btn-primary dropdown-toggle" onclick="showResult()" value="预测" style="margin-left:50px">
-    <input type="button" class="btn btn-primary dropdown-toggle" onclick="showAccuracy()" value="显示分类器准确率" style="margin-left:50px">
+    <input type="button" class="btn btn-primary dropdown-toggle" onclick="var showAccuracy = function () {
+        var msg = '准确率：'+predictionData['acc'][0][0]+'\n'+'精度：'+predictionData['acc'][0][1]+'\n'+'召回率：'+predictionData['acc'][0][2];
+        alert(msg);
+    };
+    showAccuracy()" value="显示分类器准确率" style="margin-left:50px">
 
 </div>
 
@@ -81,54 +85,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
-
-
-<%--<!--教师上传课程列表-->--%>
-<%--<script type="text/javascript">--%>
-    <%--window.studentList="";--%>
-    <%--$(function () {--%>
-        <%--var index=1;--%>
-        <%--var strHtml = "";//存储数据的变量--%>
-        <%--strHtml += "<table class=\"table table-hover\">";--%>
-        <%--strHtml += "<thead>" +--%>
-            <%--"<tr>" +--%>
-            <%--"<th>序号</th>" +--%>
-            <%--"<th>学生号</th>" +--%>
-            <%--"<th>成绩</th>" +--%>
-            <%--"<th>是否获得证书</th>" +--%>
-            <%--"<th>详情</th>" +--%>
-            <%--"</tr>" +--%>
-            <%--"</thead>";--%>
-        <%--var $sList = $("#predict");--%>
-        <%--$sList.empty();//清空内容--%>
-
-        <%--$.ajax({--%>
-            <%--type:"post",--%>
-            <%--async:false,--%>
-            <%--url:"../sList.do?pageNo="+"1",--%>
-            <%--data:{},--%>
-            <%--dataType:"json",--%>
-            <%--success:function (data) {--%>
-                <%--studentList=data;--%>
-                <%--$.each(data, function (uid,item) {--%>
-                    <%--strHtml += "<tr><td>"+(index)+"</td>";--%>
-                    <%--strHtml += "<td>"+uid+"</td>";--%>
-                    <%--strHtml += "<td>"+item[4]+ "</td>";--%>
-                    <%--strHtml += "<td>"+item[12]+ "</td>";--%>
-                    <%--strHtml += "<td><button class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' " +--%>
-                        <%--"onclick=\"showModel('"+uid+"')\" >详情</button></td></tr>";--%>
-                    <%--index++;--%>
-
-                <%--});--%>
-                <%--$sList.html(strHtml);--%>
-            <%--},--%>
-            <%--error: function (errorMsg) {--%>
-                <%--alert("加载失败");--%>
-            <%--}--%>
-        <%--})--%>
-    <%--})--%>
-<%--</script>--%>
 
 <!--点击详情显示模态框-->
 <script>
@@ -175,11 +131,12 @@
     }
 </script>
 
+
 <script>
+    window.predictionData="";
     function showResult() {
         var path = document.getElementById("path").value;
         // console.info(path);
-        var index=1;
         var strHtml = "";//存储数据的变量
         strHtml += "<table class=\"table table-hover\">";
         strHtml += "<thead>" +
@@ -200,15 +157,17 @@
             data: {"path":path},
             dataType: "json",
             success: function (data) {
-                $.each(data,function (uid,item) {
-                    strHtml += "<tr><td>"+(index)+"</td>";
-                    strHtml += "<td>"+uid+"</td>";
-                    strHtml += "<td>"+item[0]+ "</td>";
+                window.predictionData=data;
+                $.each(data["prediction"],function (index,item) {
+                    strHtml += "<tr><td>"+(index+1)+"</td>";
+                    strHtml += "<td>"+item[0]+"</td>";
                     strHtml += "<td>"+item[1]+ "</td>";
+                    strHtml += "<td>"+item[2]+ "</td>";
                     strHtml += "<td><button class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' " +
-                    "onclick=\"showModel('"+uid+"')\" >详情</button></td></tr>";
+                    "onclick=\"showModel('"+item[0]+"')\" >详情</button></td></tr>";
                 });
                 $sList.html(strHtml);
+                console.info(predictionData["acc"]);
             },
             error: function (errorMsg) {
                 alert("加载失败");
@@ -217,9 +176,6 @@
     }
 </script>
 
-<script type="javascript">
-
-</script>
 
 </body>
 </html>

@@ -318,13 +318,13 @@ public class Kfolder {
     }
 
 
-    public Map<String, ArrayList<String>> C45Tree(String path) {
+    public ArrayList<ArrayList<String>> C45Tree(String path) {
         node = new Node();
         node.setValue("root");
         buildTree(transfer(train, 1), attrNames, attrValues, node);
         assess(attrNames, transfer(test, 1));
-        Map<String, ArrayList<String>> map = prediction(path);
-        return map;
+        ArrayList<ArrayList<String>> list = prediction(path);
+        return list;
     }
 
     //构建决策树（迭代）
@@ -562,8 +562,6 @@ public class Kfolder {
         float total = TP + FP + TN + FN;
         //准确率（准确率）
         accuracy = (float) (TP + TN) / (float) (TP + TN + FP + FN);
-        //误分类率（错误率）
-        float errorRate = (float) (FP + FN) / (float) (TP + TN + FP + FN);
         //精度
         precision = (float) (TP) / (float) (TP + FP);
         //召回率
@@ -579,25 +577,27 @@ public class Kfolder {
         System.out.printf("\n召回率recall：%.2f", recall * 100);
 
     }
-    public JSONObject showAccurancy(){
-        JSONObject json = new JSONObject();
-        json.put("accuracy",accuracy);
-        json.put("precision",precision);
-        json.put("recall",recall);
-        return json;
+    public ArrayList<ArrayList<String>> showAccurancy(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add(String.valueOf(accuracy*100)+"%");
+        list.add(String.valueOf(precision*100)+"%");
+        list.add(String.valueOf(recall*100)+"%");
+        ArrayList<ArrayList<String>> allList = new ArrayList<>();
+        allList.add(list);
+        return allList;
     }
 
 
-    public Map<String, ArrayList<String>> prediction(String predictionPath) {
-        Map<String, ArrayList<String>> map = new HashMap<>();
+    private ArrayList<ArrayList<String>> prediction(String predictionPath) {
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
         MyFile file = new MyFile(predictionPath);
         ArrayList<Data> predictionData = file.myFileReader();
         getData(predictionData);
-        prediction(transfer(predictionData, 0), map);
-        return map;
+        prediction(transfer(predictionData, 0), list);
+        return list;
     }
 
-    private void prediction(ArrayList<ArrayList<String>> predictionData, Map<String, ArrayList<String>> map) {
+    private void prediction(ArrayList<ArrayList<String>> predictionData, ArrayList<ArrayList<String>> allList) {
 
         for (ArrayList<String> dataItem : predictionData) {
             ArrayList<String> list = new ArrayList<>();
@@ -625,12 +625,11 @@ public class Kfolder {
             } else {
                 result = searchNode.decision;
             }
+            list.add(dataItem.get(1));
             list.add(dataItem.get(0));
             list.add(result);
-            map.put(dataItem.get(1),list);
+            allList.add(list);
         }
-        JSONObject json = JSONObject.fromObject(map);
-        System.out.println(json);
     }
 
     public static void main(String[] args) {

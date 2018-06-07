@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class getResult extends HttpServlet {
@@ -27,7 +28,14 @@ public class getResult extends HttpServlet {
         Kfolder kfolder = new Kfolder();
         String path = req.getParameter("path");
 
-        Map<String,ArrayList<String>> map =  kfolder.C45Tree(path);
+        ArrayList<ArrayList<String>> pre =  kfolder.C45Tree(path);
+        ArrayList<ArrayList<String>> accList = kfolder.showAccurancy();
+
+
+        Map<String,ArrayList<ArrayList<String>>> map = new HashMap<>();
+        map.put("prediction",pre);
+        map.put("acc",accList);
+
         JSONObject json = JSONObject.fromObject(map);
         //返回给前段页面
         PrintWriter out = resp.getWriter();

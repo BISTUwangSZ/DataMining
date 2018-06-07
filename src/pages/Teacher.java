@@ -34,8 +34,8 @@ public class Teacher {
     public  JSONObject importPredictionData(String cid) {
         Kfolder kfolder = new Kfolder();
         String predictionPath="src/dataset/test.csv";
-        Map<String,ArrayList<String>> map =  kfolder.C45Tree(predictionPath);
-        JSONObject jsonObject = JSONObject.fromObject(map);
+        ArrayList<ArrayList<String>> list =  kfolder.C45Tree(predictionPath);
+        JSONObject jsonObject = JSONObject.fromObject(list);
         System.out.println();
         System.out.println(jsonObject);
         return jsonObject;
