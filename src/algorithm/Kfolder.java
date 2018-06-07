@@ -598,7 +598,7 @@ public class Kfolder {
     }
 
     private void prediction(ArrayList<ArrayList<String>> predictionData, ArrayList<ArrayList<String>> allList) {
-
+        Map<String,Double> avg = CalculateAVG(predictionData);
         for (ArrayList<String> dataItem : predictionData) {
             ArrayList<String> list = new ArrayList<>();
             Node searchNode = node;
@@ -608,7 +608,7 @@ public class Kfolder {
                 for (int i = 0; i < searchNode.children.size(); i++) {
                     Node temp = searchNode.children.get(i);
                     int index = attrNames.indexOf(temp.value);
-                    if (dataItem.get(index + 2).toString().equals(temp.disvisionValue)) {
+                    if (dataItem.get(index + 2).equals(temp.disvisionValue)) {
                         searchNode = temp;
                         flag = true;
                         break;
@@ -625,11 +625,84 @@ public class Kfolder {
             } else {
                 result = searchNode.decision;
             }
+            String grade="";
+            if (dataItem.get(8)==null){
+                grade="由于该生未参加考试";
+            } else {
+                double myGeade = Double.parseDouble(dataItem.get(8));
+                if (myGeade>avg.get("grade")){
+                    grade="该生成绩合格";
+                } else {
+                    grade="该生成绩不合格";
+                }
+            }
+            String nevents="";
+            double myevents = Double.parseDouble(dataItem.get(9));
+            if (myevents>avg.get("nevents")){
+                nevents="高于平均值";
+            } else {
+                nevents="低于平均值";
+            }
+            String nplayVideos = "";
+            double myvideos = Double.parseDouble(dataItem.get(11));
+            if (myvideos>avg.get("nplayVideos")){
+                nplayVideos="高于平均值";
+            } else {
+                nplayVideos="低于平均值";
+            }
+            String nchapters="";
+            double mychapters = Double.parseDouble(dataItem.get(12));
+            if (mychapters>avg.get("nchapters")){
+                nchapters="高于平均值";
+            } else {
+                nchapters="低于平均值";
+            }
+            String nforum_posts="";
+            double myposts = Double.parseDouble(dataItem.get(13));
+            if (myposts>avg.get("nforumPosts")){
+                nforum_posts="高于平均值";
+            } else {
+                nforum_posts="低于平均值";
+            }
+            String certified="";
+            if (result.equals("yes")){
+                certified="能";
+            } else {
+                certified="无法";
+            }
+
+            String res=grade+",\n总交互次数"+nevents+",\n总观看视频数"+nplayVideos+",\n学习章节数"+nchapters+",\n论坛发帖数"+nforum_posts
+                    +"\n结合该生个人情况，该生最终"+certified+"取得证书。";
+
             list.add(dataItem.get(1));
             list.add(dataItem.get(0));
             list.add(result);
+            list.add(res);
             allList.add(list);
         }
+    }
+
+    private Map<String,Double> CalculateAVG(ArrayList<ArrayList<String>> predictionData) {
+        Map<String,Double> map = new HashMap<>();
+        double sumGrade=0;
+        double sumNevents=0;
+        double sumNplayVideos=0;
+        double sumNchapters=0;
+        double sumNforum_posts=0;
+        for (ArrayList item:predictionData ){
+             sumGrade += Double.parseDouble(String.valueOf(item.get(8)));
+             sumNevents += Double.parseDouble(String.valueOf(item.get(9)));
+             sumNplayVideos +=  Double.parseDouble(String.valueOf(item.get(11)));
+             sumNchapters +=  Double.parseDouble(String.valueOf(item.get(12)));
+             sumNforum_posts+= Double.parseDouble(String.valueOf(item.get(13)));
+        }
+        int length=predictionData.size();
+        map.put("grade",sumGrade/length);
+        map.put("nevents",sumNevents/length);
+        map.put("nplayVideos",sumNplayVideos);
+        map.put("nchapters",sumNchapters/length);
+        map.put("nforumPosts",sumNforum_posts);
+        return map;
     }
 
     public static void main(String[] args) {

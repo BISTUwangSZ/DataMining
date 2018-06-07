@@ -25,6 +25,7 @@ public class getResult extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=utf-8");
         Kfolder kfolder = new Kfolder();
         String path = req.getParameter("path");
 

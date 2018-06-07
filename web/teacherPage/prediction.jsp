@@ -69,87 +69,24 @@
     <div id="predict"></div>
 </div>
 
-<!-- 模态框div（Modal） -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">
-                    详细信息
-                </h4>
-            </div>
-            <div class="modal-body">
 
-                <div id="mycContent"></div>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-
-<!--点击详情显示模态框-->
+<!--获取预测数据列表-->
 <script>
-    $(function(){
-        // dom加载完毕
-        var $m_btn = $('#btn-sm');
-        var $modal = $('#myModal');
-        // 测试 bootstrap 居中
-        $modal.on('show.bs.modal', function(){
-            var $this = $(this);
-            var $modal_dialog = $this.find('.modal-dialog');
-            // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
-            $this.css('display', 'block');
-            $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 3) });
-        });
-    });
-</script>
-
-<!--模态框数据-->
-<script type="text/javascript">
-    function showModel(userId) {
-        var $json = $("#mycContent");
-        var strHtml = "";//存储数据的变量
-        $json.empty();//清空内容
-        $.each(studentList,function(uid,info){
-            if (uid===userId) {
-                strHtml += "姓名:"+uid +"<br />";
-                strHtml += "地区:"+info["0"]+"<br />";
-                strHtml += "学历"+info["1"]+"<br />";
-                strHtml += "年龄"+info["2"]+"<br />";
-                strHtml += "性别"+info["3"]+"<br />";
-                strHtml += "成绩"+info["4"]+"<br />";
-                strHtml += "注册时间"+info["5"]+"<br />";
-                strHtml += "最后登录时间"+info["6"]+"<br />";
-                strHtml += "交互次数"+info["7"] +"<br />";
-                strHtml += "交互天数"+info["8"] +"<br />";
-                strHtml += "播放视频数"+info["9"] +"<br />";
-                strHtml += "观看章节数"+info["10"] +"<br />";
-                strHtml += "论坛发帖数"+info["11"] +"<br />";
-                strHtml += "取得证书"+info["12"] +"<br />";
-            }
-        });
-        $json.html(strHtml);
-    }
-</script>
-
-
-<script>
-    window.predictionData="";
     function showResult() {
+        var $sList = $("#predict");
+        $sList.empty();//清空内容
         var path = document.getElementById("path").value;
-        // console.info(path);
         var strHtml = "";//存储数据的变量
         strHtml += "<table class=\"table table-hover\">";
         strHtml += "<thead>" +
             "<tr>" +
             "<th>序号</th>" +
             "<th>学生号</th>" +
-            "<th>成绩</th>" +
-            "<th>是否获得证书</th>" +
+            "<th>课程号</th>" +
+            "<th>能否获得证书</th>" +
             "<th>详情</th>" +
             "</tr>" +
             "</thead>";
-        var $sList = $("#predict");
-        $sList.empty();//清空内容
         $.ajax({
             type: "post",
             async: false,
@@ -159,18 +96,25 @@
             success: function (data) {
                 window.predictionData=data;
                 $.each(data["prediction"],function (index,item) {
+                    var uid = item[0];
                     strHtml += "<tr><td>"+(index+1)+"</td>";
-                    strHtml += "<td>"+item[0]+"</td>";
+                    strHtml += "<td>"+uid+"</td>";
                     strHtml += "<td>"+item[1]+ "</td>";
                     strHtml += "<td>"+item[2]+ "</td>";
-                    strHtml += "<td><button class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' " +
-                    "onclick=\"showModel('"+item[0]+"')\" >详情</button></td></tr>";
+                    strHtml += "<td><button class='btn btn-info btn-sm'onclick=\"showReason('"+uid+"')\" >详情</button></td></tr>";
                 });
                 $sList.html(strHtml);
                 console.info(predictionData["acc"]);
             },
             error: function (errorMsg) {
                 alert("加载失败");
+            }
+        })
+    }
+    function showReason(userID) {
+        $.each(predictionData["prediction"],function (index,item) {
+            if(item[0]===userID){
+                alert(item[0]+"\n"+item[3]);
             }
         })
     }
