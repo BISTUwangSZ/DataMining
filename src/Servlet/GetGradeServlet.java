@@ -35,6 +35,7 @@ public class GetGradeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=utf-8");
         JSONObject json = new JSONObject();
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();

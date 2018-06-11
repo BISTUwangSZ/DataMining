@@ -48,6 +48,8 @@
                     <i class="fa fa-list"></i> 课程列表</a></li>
                 <li><a id="chart" style="width: 100px" href="courseChart.jsp?cid=<%=cid%>">
                     <i class="fa fa-list"></i> 课程图表</a></li>
+                <li><a id="prediction" style="width: 100px" href="prediction.jsp?cid=<%=cid%>">
+                    <i class="fa fa-list"></i> 预测</a></li>
             </ul>
 
         </div>
@@ -92,9 +94,9 @@
 <div class="myRight" style="float: bottom; margin-top: 30px">
 
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="allCourse" style="width: 800px;height:400px;margin: 0 auto">
+    <div id="allCourse" style="width: 700px;height:400px;margin: 0 auto">
     </div>
-    <div id="table" style="width: 800px;height: 50px;margin: 0 auto">
+    <div id="table" style="width: 700px;height: 50px;margin: 0 auto">
     </div>
 
 </div>
@@ -183,6 +185,17 @@
         table += "<table class=\"table table-hover\">";
         table += "<thead><tr>";
 
+        var myTitle = "";
+        if (kind==="age"){
+            myTitle="年龄和证书影响图";
+        }
+        if (kind==="gender"){
+            myTitle="性别和证书影响图";
+        }
+        if (kind==="learner_level"){
+            myTitle="学历和证书影响图";
+        }
+
         $.ajax({
             type: "post",
             async: false,
@@ -194,15 +207,15 @@
                 option = {
                     tooltip: {
                         trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross',
-                            crossStyle: {
-                                color: '#999'
-                            }
-                        }
+                        // axisPointer: {
+                        //     type: 'cross',
+                        //     crossStyle: {
+                        //         color: '#999'
+                        //     }
+                        // }
                     },
                     title: {
-                        text: '学历和证书影响图'
+                        text: myTitle
                     },
                     legend: {
                         data: ['总人数', '获得证书人数']
@@ -216,7 +229,7 @@
                             },
                             axisLabel: {
                                 interval: 0,
-                                rotate: 30
+                                // rotate: 30
                             }
                         }
                     ],
@@ -258,7 +271,18 @@
                 };
                 levelChart.setOption(option);
 
-                table += "<th>" + kind + "</th>";
+                var str = "";
+                if (kind==="age"){
+                    str="年龄";
+                }
+                if (kind==="gender"){
+                    str="性别";
+                }
+                if (kind==="learner_level"){
+                    str="学历";
+                }
+
+                table += "<th>" + str + "</th>";
                 $.each(data["kind"], function (index, item) {
                     table += "<th>" + item + "</th>";
                 });
@@ -280,6 +304,8 @@
 <!--成绩-->
 <script type="text/javascript">
     function showGrade() {
+        var $kind = $("#table");
+        $kind.empty();//清空内容
         echarts.dispose(document.getElementById("allCourse"));
         var myChart = echarts.init(document.getElementById("allCourse"));
         $.ajax({
@@ -328,6 +354,8 @@
 
 <script type="text/javascript">
     function showInteraction() {
+        var $kind = $("#table");
+        $kind.empty();//清空内容
         echarts.dispose(document.getElementById("allCourse"));
         var myChart = echarts.init(document.getElementById("allCourse"));
         $.ajax({
@@ -358,25 +386,25 @@
                         {left: sizeValue, top: sizeValue}
                     ],
                     xAxis: [
-                        {type: 'value', gridIndex: 0, name: 'events', axisLabel: {rotate: 50, interval: 0}},
-                        {type: 'value', gridIndex: 1, name: 'chapters', boundaryGap: false, axisLabel: {rotate: 50, interval: 0}},
-                        {type: 'value', gridIndex: 2, name: 'videos', axisLabel: {rotate: 50, interval: 0}},
-                        {type: 'value', gridIndex: 3, name: 'forum_posts', axisLabel: {rotate: 50, interval: 0}}
+                        {type: 'value', gridIndex: 0, name: '交互次数', axisLabel: {rotate: 50, interval: 0}},
+                        {type: 'value', gridIndex: 1, name: '学习章节数', boundaryGap: false, axisLabel: {rotate: 50, interval: 0}},
+                        {type: 'value', gridIndex: 2, name: '观看视频数', axisLabel: {rotate: 50, interval: 0}},
+                        {type: 'value', gridIndex: 3, name: '论坛发帖数', axisLabel: {rotate: 50, interval: 0}}
                     ],
                     yAxis: [
-                        {type: 'value', gridIndex: 0, name: 'grade'},
-                        {type: 'value', gridIndex: 1, name: 'grade'},
-                        {type: 'value', gridIndex: 2, name: 'grade'},
-                        {type: 'value', gridIndex: 3, name: 'grade'}
+                        {type: 'value', gridIndex: 0, name: '成绩'},
+                        {type: 'value', gridIndex: 1, name: '成绩'},
+                        {type: 'value', gridIndex: 2, name: '成绩'},
+                        {type: 'value', gridIndex: 3, name: '成绩'}
                     ],
                     dataset: {
                         dimensions: [
-                            'grade',
-                            'events',
-                            'videos',
-                            'chapters',
-                            'forum_posts',
-                            'uid'
+                            '成绩',
+                            '交互次数',
+                            '观看视频数',
+                            '学习章节数',
+                            '论坛发帖数',
+                            '学号'
                         ],
                         source: data
                     },
@@ -387,8 +415,8 @@
                             xAxisIndex: 0,
                             yAxisIndex: 0,
                             encode: {
-                                x: 'events',
-                                y: 'grade',
+                                x: '交互次数',
+                                y: '成绩',
                                 tooltip: [0,1,5]
                             }
                         },
@@ -398,8 +426,8 @@
                             xAxisIndex: 1,
                             yAxisIndex: 1,
                             encode: {
-                                x: 'chapters',
-                                y: 'grade',
+                                x: '学习章节数',
+                                y: '成绩',
                                 tooltip: [0,3,5]
                             }
                         },
@@ -409,8 +437,8 @@
                             xAxisIndex: 2,
                             yAxisIndex: 2,
                             encode: {
-                                x: 'videos',
-                                y: 'grade',
+                                x: '观看视频数',
+                                y: '成绩',
                                 tooltip: [0,2,5]
                             }
                         },
@@ -420,8 +448,8 @@
                             xAxisIndex: 3,
                             yAxisIndex: 3,
                             encode: {
-                                x: 'forum_posts',
-                                y: 'grade',
+                                x: '论坛发帖数',
+                                y: '成绩',
                                 tooltip: [0,4,5]
                             }
                         }

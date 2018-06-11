@@ -29,6 +29,7 @@ public class StuGetCourseList extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=utf-8");
         HttpSession session = req.getSession();
         String uid = session.getAttribute("uid").toString();
         Connection conn = (Connection) session.getAttribute("conn");

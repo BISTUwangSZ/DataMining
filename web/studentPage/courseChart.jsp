@@ -88,7 +88,7 @@
     </div>
 </div>
 
-<div class="myRight" style="float: bottom; margin-top: 30px">
+<div class="myRight" style="float: bottom; margin-top: 30px;width: 800px">
 
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="allCourse" style="width: 800px;height:400px;margin: 0 auto">

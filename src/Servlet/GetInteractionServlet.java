@@ -33,6 +33,7 @@ public class GetInteractionServlet  extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=utf-8");
         JSONObject attrs = new JSONObject();
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
@@ -44,7 +45,7 @@ public class GetInteractionServlet  extends HttpServlet {
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
-            String[] keys = new String[]{"grade", "events", "videos", "chapters", "forum_posts","uid"};
+            String[] keys = new String[]{"成绩", "交互次数", "观看视频数", "学习章节数", "论坛发帖数","学号"};
             ArrayList<Double> list0 = new ArrayList<>();
             ArrayList<Double> list1 = new ArrayList<>();
             ArrayList<Double> list2 = new ArrayList<>();

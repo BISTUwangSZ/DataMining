@@ -59,7 +59,7 @@
 </div>
 
 
-<div class="myRight" style="float: left; width: 900px">
+<div class="myRight" style="float: left; width: 800px">
     <!-- 载入左侧菜单指向的jsp（或html等）页面内容 -->
     <div id="studentList"></div>
 </div>

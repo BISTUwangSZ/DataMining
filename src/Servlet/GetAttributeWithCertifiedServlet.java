@@ -35,7 +35,8 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       JSONObject attrs = new JSONObject();
+        resp.setContentType("text/html; charset=utf-8");
+        JSONObject attrs = new JSONObject();
         String kind = req.getParameter("kind");
         HttpSession session = req.getSession();
         String cid = session.getAttribute("cid").toString();
@@ -51,7 +52,7 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
         ArrayList<String> perList = new ArrayList<>();
 
         for (Object obj : attributeJson.keySet()) {
-            kindList.add((String) obj);
+            kindList.add(toMyString(obj));
             allList.add(String.valueOf(attributeJson.get(obj)));
             double d=0;
             if(certifiedJson.get(obj)==null){
@@ -96,5 +97,21 @@ public class GetAttributeWithCertifiedServlet extends HttpServlet {
             e.printStackTrace();
         }
         return map;
+    }
+
+    public String toMyString(Object object){
+        String res = "";
+        switch ((String)object){
+            case "female": res="女";break;
+            case "male": res="男";break;
+            case "empty": res="未填写";break;
+            case "Master": res="博士";break;
+            case "Secondary": res="中学";break;
+            case "Less than Secondary": res="中学以下";break;
+            case "Bachelor": res="本科";break;
+            case "Doctorate": res="硕士";break;
+            default:res=(String)object;
+        }
+        return res;
     }
 }
